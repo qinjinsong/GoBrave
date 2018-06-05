@@ -10,6 +10,11 @@ var GameManager = cc.Class({
         intervalRate: 1,
         moveTime: 0.2,
         moveOffset: 50,
+        currentScore: 0,
+        lableScore:{
+            default: null,
+            type: cc.Label
+        },
         gridNodes: {
             default: Array,
             type: cc.GridRode
@@ -37,6 +42,7 @@ var GameManager = cc.Class({
             this._moveBgGrid()
             this._movePlayer()
         }, this.intervalRate)
+        this._callbackScore(0)
     },
 
     _init(){
@@ -52,7 +58,7 @@ var GameManager = cc.Class({
 
         var player = this.node.getChildByName('Player')
         this.player = player.getComponent('Player')
-        this.player.initData(this.moveTime, this.moveOffset)
+        this.player.initData(this.moveTime, this.moveOffset, this._callbackScore)
     },
     _moveBgGrid(){
         var count = this.gridNodes.length
@@ -90,4 +96,8 @@ var GameManager = cc.Class({
         }
         cc.eventManager.addListener(listener, self.node)
     },
+    _callbackScore(score){
+        GameManager.Instance.currentScore += score
+        GameManager.Instance.lableScore.string = "Score: " + GameManager.Instance.currentScore
+    }
 });

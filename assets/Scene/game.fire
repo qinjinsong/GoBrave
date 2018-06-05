@@ -17,7 +17,7 @@
         "__id__": 2
       },
       {
-        "__id__": 581
+        "__id__": 582
       }
     ],
     "_tag": -1,
@@ -23249,7 +23249,8 @@
     "_enabled": true,
     "moveTime": 0.2,
     "moveOffset": 50,
-    "moveRight": true
+    "moveRight": true,
+    "callbackScore": null
   },
   {
     "__type__": "cc.Canvas",
@@ -23279,8 +23280,34 @@
     "intervalRate": 0.5,
     "moveTime": 0.1,
     "moveOffset": 50,
+    "currentScore": 0,
+    "lableScore": {
+      "__id__": 581
+    },
     "gridNodes": [],
     "player": null
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 582
+    },
+    "_enabled": true,
+    "_useOriginalSize": false,
+    "_actualFontSize": 60,
+    "_fontSize": 60,
+    "_lineHeight": 50,
+    "_enableWrapText": true,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
+    "_spacingX": 0,
+    "_N$string": "Score: 0",
+    "_N$horizontalAlign": 2,
+    "_N$verticalAlign": 1,
+    "_N$fontFamily": "Arial",
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.Node",
@@ -23294,7 +23321,7 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 582
+        "__id__": 581
       }
     ],
     "_prefab": null,
@@ -23316,7 +23343,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 223.45,
-      "height": 40
+      "height": 50
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -23333,27 +23360,5 @@
     "_globalZOrder": 0,
     "_opacityModifyRGB": false,
     "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Label",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 581
-    },
-    "_enabled": true,
-    "_useOriginalSize": false,
-    "_actualFontSize": 60,
-    "_fontSize": 60,
-    "_lineHeight": 40,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_spacingX": 0,
-    "_N$string": "Score: 0",
-    "_N$horizontalAlign": 2,
-    "_N$verticalAlign": 1,
-    "_N$fontFamily": "Arial",
-    "_N$overflow": 0
   }
 ]
