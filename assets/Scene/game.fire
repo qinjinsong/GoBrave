@@ -23258,7 +23258,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Start",
+    "_name": "Mask",
     "_objFlags": 0,
     "_parent": {
       "__id__": 2
@@ -23391,7 +23391,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Label",
+    "_name": "labelHint",
     "_objFlags": 0,
     "_parent": {
       "__id__": 579
@@ -23565,7 +23565,7 @@
     "moveTime": 0.1,
     "moveOffset": 50,
     "currentScore": 0,
-    "startNode": {
+    "maskRoot": {
       "__id__": 579
     },
     "lableScore": {

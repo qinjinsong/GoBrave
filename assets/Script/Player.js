@@ -5,6 +5,7 @@ cc.Class({
         moveTime: 0.2,
         moveOffset: 50,
         moveRight: true,
+        startPos: null,
         callbackScore: null,
         callbackOver: null
     },
@@ -13,11 +14,8 @@ cc.Class({
 
     // onLoad () {},
 
-    start () {
-
-    },
-
     initData(movetime, moveoffset, cbScore, cbOver){
+        this.startPos = this.node.position
         this.moveTime = movetime
         this.moveOffset = moveoffset
         this.callbackScore = cbScore
@@ -39,6 +37,10 @@ cc.Class({
         var cb = cc.callFunc(this._moveFinish, this)
         var sequence = cc.sequence(mt, cb)
         this.node.runAction(sequence)
+    },
+    resetPosition(){
+        console.log(this.startPos)
+        this.node.position = cc.p(this.startPos.x, this.startPos.y)
     },
 
     _moveFinish(){

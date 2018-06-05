@@ -10,9 +10,13 @@ var GameManager = cc.Class({
         moveTime: 0.2,
         moveOffset: 50,
         currentScore: 0,
-        startNode:{
+        maskRoot:{
             default: null,
             type: cc.Node
+        },
+        labelMaskHint:{
+            default: null,
+            type: cc.Label
         },
         lableScore:{
             default: null,
@@ -24,9 +28,9 @@ var GameManager = cc.Class({
         },
         player: {
             default: null,
-            type: cc.player
+            type: cc.Player
         },
-        startGame: false
+        startGame: false,
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -40,6 +44,9 @@ var GameManager = cc.Class({
     // update (dt) {},
 
     _init(){
+        this.lableScore.node.active = false
+        this.maskRoot.active = true
+        this.labelMaskHint.string = "CLICK\nTO\nSTART"
         var noderoot = this.node.getChildByName("NodeRoot")
         var childs = noderoot.children
         for(var i=0; i<childs.length; i++)
@@ -60,9 +67,12 @@ var GameManager = cc.Class({
     _gameStart(){
         console.log('start ')
         this.startGame = true
-        this.startNode.active = false
+        this.maskRoot.active = false
+        this.lableScore.node.active = true
         this.player.setActive(true)
+        this._resetPlayerPosition()
         this.schedule(this._start, this.intervalRate)
+        this.currentScore = 0
         this._callbackScore(0)
     },
     _start(){
@@ -81,6 +91,9 @@ var GameManager = cc.Class({
     _movePlayer(){
         this.player.move()
     },
+    _resetPlayerPosition(){
+        this.player.resetPosition()
+    },
     _setPlayerDirection(moveRight){
         this.player.setDirection(moveRight)
     },
@@ -95,7 +108,7 @@ var GameManager = cc.Class({
 
                 if(!self.startGame)
                     self._gameStart()
-                    
+
                 self._setPlayerDirection(moveRight)
             },
             onTouchMoved: function (touches, event) {
@@ -115,7 +128,12 @@ var GameManager = cc.Class({
     },
     _callbackOver(){
         console.log('over')
-        this.startGame = false
+        GameManager.Instance.startGame = false
         GameManager.Instance.unschedule(GameManager.Instance._start)
+
+        GameManager.Instance.player.setActive(false)
+        GameManager.Instance.lableScore.node.active = false
+        GameManager.Instance.maskRoot.active = true
+        GameManager.Instance.labelMaskHint.string = "YOU SCORE\n" + GameManager.Instance.currentScore + "\n\nCLICK TO\nRESTART"
     }
 });
