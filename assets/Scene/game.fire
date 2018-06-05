@@ -23250,7 +23250,8 @@
     "moveTime": 0.2,
     "moveOffset": 50,
     "moveRight": true,
-    "callbackScore": null
+    "callbackScore": null,
+    "callbackOver": null
   },
   {
     "__type__": "cc.Canvas",

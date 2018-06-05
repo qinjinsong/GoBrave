@@ -6,6 +6,7 @@ cc.Class({
         moveOffset: 50,
         moveRight: true,
         callbackScore: null,
+        callbackOver: null
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -16,10 +17,11 @@ cc.Class({
 
     },
 
-    initData(movetime, moveoffset, callback){
+    initData(movetime, moveoffset, cbScore, cbOver){
         this.moveTime = movetime
         this.moveOffset = moveoffset
-        this.callbackScore = callback
+        this.callbackScore = cbScore
+        this.callbackOver = cbOver
     },
     setDirection(right){
         this.moveRight = right
@@ -42,7 +44,15 @@ cc.Class({
         this._callbackScore(1)
     },
     _callbackScore(score){
-        if(this.callbackScore != null)
-            this.callbackScore(score)
+        if(this.node.position.x < -350 || this.node.position.x > 350)
+        {
+            if(this.callbackOver != null)
+                this.callbackOver()
+        }
+        else
+        {
+            if(this.callbackScore != null)
+                this.callbackScore(score)
+        }
     }
 });

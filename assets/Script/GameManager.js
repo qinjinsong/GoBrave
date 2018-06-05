@@ -38,13 +38,14 @@ var GameManager = cc.Class({
 
     gameStart(){
         this._setInputControl()
-        this.schedule(function(){
-            this._moveBgGrid()
-            this._movePlayer()
-        }, this.intervalRate)
+        this.schedule(this._start, this.intervalRate)
         this._callbackScore(0)
     },
-
+    
+    _start(){
+        this._moveBgGrid()
+        this._movePlayer()
+    },
     _init(){
         var noderoot = this.node.getChildByName("NodeRoot")
         var childs = noderoot.children
@@ -58,7 +59,7 @@ var GameManager = cc.Class({
 
         var player = this.node.getChildByName('Player')
         this.player = player.getComponent('Player')
-        this.player.initData(this.moveTime, this.moveOffset, this._callbackScore)
+        this.player.initData(this.moveTime, this.moveOffset, this._callbackScore, this._callbackOver)
     },
     _moveBgGrid(){
         var count = this.gridNodes.length
@@ -99,5 +100,9 @@ var GameManager = cc.Class({
     _callbackScore(score){
         GameManager.Instance.currentScore += score
         GameManager.Instance.lableScore.string = "Score: " + GameManager.Instance.currentScore
+    },
+    _callbackOver(){
+        console.log('over')
+        GameManager.Instance.unschedule(GameManager.Instance._start)
     }
 });
