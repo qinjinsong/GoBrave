@@ -6,11 +6,14 @@ var GameManager = cc.Class({
     },
 
     properties: {
-        countdownTime: 3,
         intervalRate: 1,
         moveTime: 0.2,
         moveOffset: 50,
         currentScore: 0,
+        startNode:{
+            default: null,
+            type: cc.Node
+        },
         lableScore:{
             default: null,
             type: cc.Label
@@ -22,7 +25,8 @@ var GameManager = cc.Class({
         player: {
             default: null,
             type: cc.player
-        }
+        },
+        startGame: false
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -32,20 +36,9 @@ var GameManager = cc.Class({
      },
     start () {
         this._init()
-        this.gameStart()
     },
     // update (dt) {},
 
-    gameStart(){
-        this._setInputControl()
-        this.schedule(this._start, this.intervalRate)
-        this._callbackScore(0)
-    },
-    
-    _start(){
-        this._moveBgGrid()
-        this._movePlayer()
-    },
     _init(){
         var noderoot = this.node.getChildByName("NodeRoot")
         var childs = noderoot.children
@@ -60,6 +53,21 @@ var GameManager = cc.Class({
         var player = this.node.getChildByName('Player')
         this.player = player.getComponent('Player')
         this.player.initData(this.moveTime, this.moveOffset, this._callbackScore, this._callbackOver)
+        this.player.setActive(false)
+
+        this._setInputControl()
+    },
+    _gameStart(){
+        console.log('start ')
+        this.startGame = true
+        this.startNode.active = false
+        this.player.setActive(true)
+        this.schedule(this._start, this.intervalRate)
+        this._callbackScore(0)
+    },
+    _start(){
+        this._moveBgGrid()
+        this._movePlayer()
     },
     _moveBgGrid(){
         var count = this.gridNodes.length
@@ -84,6 +92,10 @@ var GameManager = cc.Class({
                 var target = event.getCurrentTarget()
                 var touchPos = target.convertToNodeSpace(touches.getLocation())
                 var moveRight = touchPos.x >= cc.view.getVisibleSize().width * 0.5
+
+                if(!self.startGame)
+                    self._gameStart()
+                    
                 self._setPlayerDirection(moveRight)
             },
             onTouchMoved: function (touches, event) {
@@ -103,6 +115,7 @@ var GameManager = cc.Class({
     },
     _callbackOver(){
         console.log('over')
+        this.startGame = false
         GameManager.Instance.unschedule(GameManager.Instance._start)
     }
 });

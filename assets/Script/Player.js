@@ -26,6 +26,9 @@ cc.Class({
     setDirection(right){
         this.moveRight = right
     },
+    setActive(state){
+        this.node.active = state
+    },
     move(){
         var pos = cc.p(this.node.position)
         pos.y += this.moveOffset
