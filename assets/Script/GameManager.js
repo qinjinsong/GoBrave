@@ -10,27 +10,26 @@ var GameManager = cc.Class({
         moveTime: 0.2,
         moveOffset: 50,
         currentScore: 0,
-        maskRoot:{
-            default: null,
-            type: cc.Node
-        },
-        labelMaskHint:{
-            default: null,
-            type: cc.Label
-        },
-        lableScore:{
-            default: null,
-            type: cc.Label
-        },
         gridNodes: {
             default: Array,
             type: cc.GridRode
         },
-        player: {
-            default: null,
-            type: cc.Player
-        },
         startGame: false,
+        lableScore: null,
+        player: null,
+        playerPrefab: {
+            default: null,
+            type: cc.Prefab
+        },
+        gridNodePrefab: {
+            default: null,
+            type: cc.Prefab
+        },
+        hintInfo: null,
+        hintInfoPrefab: {
+            default: null,
+            type: cc.Prefab
+        }
     },
 
     // LIFE-CYCLE CALLBACKS:
@@ -44,21 +43,44 @@ var GameManager = cc.Class({
     // update (dt) {},
 
     _init(){
+        // cc.loader.loadRes("prefabs/HintInfo", function (err, prefab) {
+        //     // if (err) {
+		//     //     cc.error(err.message || err)
+		//     //     return
+        //     // }
+        //     cc.error(err)
+        //     var hi = cc.instantiate(prefab);
+        //     this.hintInfo = hi.getComponent("HintInfo")
+        //     this.hintInfo.setInfo("CLICK\nTO\nSTART")
+        // })
+        cc.log('init')
+
+        var hi = cc.instantiate(this.hintInfoPrefab)
+        this.hintInfo = hi.getComponent('HintInfo')
+        this.hintInfo.setParent(this.node)
+        this.hintInfo.setActive(true)
+        this.hintInfo.setInfo("CLICK\nTO\nSTART")
+
+        var ls = this.node.getChildByName("labelScore")
+        this.lableScore = ls.getComponent(cc.Label)
         this.lableScore.node.active = false
-        this.maskRoot.active = true
-        this.labelMaskHint.string = "CLICK\nTO\nSTART"
+
         var noderoot = this.node.getChildByName("NodeRoot")
-        var childs = noderoot.children
-        for(var i=0; i<childs.length; i++)
+        var childLen = 13
+        for(var i=0; i<=childLen; i++)
         {
-            var child = childs[i]
+            var child = cc.instantiate(this.gridNodePrefab)
             var gridnode = child.getComponent("GridNode")
+            gridnode.setParent(noderoot)
+            gridnode.setPositionY((i-6) * 100)
             gridnode.initData(this.moveTime, this.moveOffset)
             this.gridNodes[i] = gridnode
         }
 
-        var player = this.node.getChildByName('Player')
-        this.player = player.getComponent('Player')
+        var p = cc.instantiate(this.playerPrefab)
+        this.player = p.getComponent('Player')
+        this.player.setParent(this.node)
+        this.player.resetPosition()
         this.player.initData(this.moveTime, this.moveOffset, this._callbackScore, this._callbackOver)
         this.player.setActive(false)
 
@@ -67,7 +89,7 @@ var GameManager = cc.Class({
     _gameStart(){
         console.log('start ')
         this.startGame = true
-        this.maskRoot.active = false
+        this.hintInfo.setActive(false)
         this.lableScore.node.active = true
         this.player.setActive(true)
         this._resetPlayerPosition()
@@ -133,7 +155,7 @@ var GameManager = cc.Class({
 
         GameManager.Instance.player.setActive(false)
         GameManager.Instance.lableScore.node.active = false
-        GameManager.Instance.maskRoot.active = true
-        GameManager.Instance.labelMaskHint.string = "YOU SCORE\n" + GameManager.Instance.currentScore + "\n\nCLICK TO\nRESTART"
+        GameManager.Instance.hintInfo.setActive(true)
+        GameManager.Instance.hintInfo.setInfo("YOU SCORE\n" + GameManager.Instance.currentScore + "\n\nCLICK TO\nRESTART")
     }
 });

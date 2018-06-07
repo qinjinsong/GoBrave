@@ -19,6 +19,12 @@ cc.Class({
         this.moveOffset = moveoffset
         this.chlids = this.node.children
     },
+    setParent(parent){
+        this.node.parent = parent
+    },
+    setPositionY(posY){
+        this.node.position = cc.p(this.node.position.x, posY)
+    },
     move(){
         var pos = cc.p(this.node.position)
         pos.y -= this.moveOffset
